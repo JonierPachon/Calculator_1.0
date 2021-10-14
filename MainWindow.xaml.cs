@@ -10,7 +10,7 @@ namespace Interactuando
     /// </summary>
     public partial class MainWindow : Window
     {
-        double auxiliar;
+        double numeroAuxiliar;
         double resultado;
         string operador = "";
         bool presionarIgual = false;//hace referencia ha si se ha dado click en igual 
@@ -20,157 +20,148 @@ namespace Interactuando
             InitializeComponent();
         }
 
-        #region Botones del cero al 9
+        #region BotonesDelCeroAlNueve
 
-        //cuando se presiona el nuemro por primera vez y
+        //cuando se presiona el nuemero por primera vez y
         //y cuando realizo operaciones
-        private void PrimeraVezPresionandoBoton()
+        private void FiltarBotonesNumericos()
         {
-            if (presionarIgual == true & resultado != 0 & auxiliar != 0)
+            // Verificamos si se realizó operacion matemática en la calculadora
+            if (presionarIgual == true & resultado != 0 & numeroAuxiliar != 0)
             {
-                txtPantSecundaria.Content = '"' + txtPantalla.Text + '"';
-                txtPantalla.Text = "";
+                lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
+                txtPantallaPrincipal.Text = "";
                 resultado = 0;
-                auxiliar = 0;
+                numeroAuxiliar = 0;
             }
 
-            else if (txtPantalla.Text == "0")
+            else if (txtPantallaPrincipal.Text == "0")
             {
-                txtPantalla.Text = "";
+                txtPantallaPrincipal.Text = "";
             }
         }
 
         private void btn0_Click(object sender, RoutedEventArgs e)
         {
-            if (txtPantalla.Text != "0")
+            if (txtPantallaPrincipal.Text != "0")
             {
-                txtPantalla.Text += 0;
-            }
-            else
-            {
-
+                txtPantallaPrincipal.Text += 0;
             }
         }
 
         private void btn1_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 1;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 1;
+
 
         }
 
         private void btn2_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 2;
 
-            txtPantalla.Text += 2;
-            
         }
 
         private void btn3_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 3;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 3;
+
         }
 
         private void btn4_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 4;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 4;
+
         }
 
         private void btn5_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 5;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 5;
+
         }
 
         private void btn6_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 6;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 6;
+
         }
 
         private void btn7_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 7;
-            
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 7;
         }
 
-        // el condicional para que todo en pantalla principal aparezca vacio despues
-        // de haber oprimido igual
         private void btn8_Click(object sender, RoutedEventArgs e)
         {
-            // el condicional para que todo en pantalla principal aparezca vacio despues
-            // de haber oprimido igual
-
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 8;
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 8;
         }
 
         private void btn9_Click(object sender, RoutedEventArgs e)
         {
-            PrimeraVezPresionandoBoton();
-            txtPantalla.Text += 9;
+            FiltarBotonesNumericos();
+            txtPantallaPrincipal.Text += 9;
         }
 
 
         #endregion
 
 
-        private void btnBorrarTodo_Click(object sender, RoutedEventArgs e)
+        private void btnLimpiarcalculadora_Click(object sender, RoutedEventArgs e)
         {
-            MetodoBorrarTodo();
+            LimpiarCalculadora();
         }
 
 
-        private void MetodoBorrarTodo()
+        private void LimpiarCalculadora()
         {
-            auxiliar = 0;
+            //reiniciamos valores
+            numeroAuxiliar = 0;
             resultado = 0;
-            txtPantalla.Text = "0";
-            txtPantSecundaria.Content = "0";
+            txtPantallaPrincipal.Text = "0";
+            lblPantallaSecundaria.Content = "0";
         }
 
-        private void btnBorrar_Click(object sender, RoutedEventArgs e)
+        private void btnBorrarUltimoNumeroDigitado_Click(object sender, RoutedEventArgs e)
         {
-            MetodoBorrar();
+            BorrarUltimoNumeroDigitado();
         }
 
-        private void MetodoBorrar()
+        private void BorrarUltimoNumeroDigitado()
         {
-            if ((txtPantalla.Text).ToLower() == "nan")
+            if ((txtPantallaPrincipal.Text).ToLower() == "nan")
             {
-                txtPantalla.Text = "0";
+                txtPantallaPrincipal.Text = "0";
             }
-            else if (txtPantalla.Text != "" & txtPantalla.Text != "0")
+            else if (txtPantallaPrincipal.Text != "" & txtPantallaPrincipal.Text != "0")
             {
                 List<char> NumBorrar = new List<char>();
 
-                NumBorrar.AddRange(txtPantalla.Text);
+                NumBorrar.AddRange(txtPantallaPrincipal.Text);
 
                 NumBorrar.RemoveAt(NumBorrar.Count - 1);
 
-                txtPantalla.Text = "";
+                txtPantallaPrincipal.Text = "";
 
                 if (NumBorrar.Count > 0)
                 {
                     foreach (char x in NumBorrar)
                     {
 
-                        txtPantalla.Text += x;
+                        txtPantallaPrincipal.Text += x;
 
                     }
                 }
 
-                else txtPantalla.Text = "0";//cuando se elimina un unico elemento 
-                //txtPantalla queda vacio, por esto coloco el "else"
+                else txtPantallaPrincipal.Text = "0";//cuando se elimina un unico elemento 
+                //txtPantallaPrincipal queda vacio, por esto coloco el "else"
 
                 NumBorrar.Clear();
 
@@ -179,7 +170,9 @@ namespace Interactuando
 
 
 
-        //operaciones matemáticas
+        #region OperacionesMatemáticas
+
+        
 
         private void btnSumar_Click(object sender, RoutedEventArgs e)
         {
@@ -207,53 +200,57 @@ namespace Interactuando
             operacion("%");
         }
 
+        #endregion
+
         private void operacion(string pSigno)
         {
-            string pValor = (string)txtPantSecundaria.Content;
+            // aquí el, mas (+), también funciona como el botón igual
+            // ya que también nos puede dar el resultado
 
-            //se agrega el signo de operacion
-            if (!pValor.EndsWith("-") & !pValor.EndsWith("+") & !pValor.EndsWith("*") 
+            string pValor = (string)lblPantallaSecundaria.Content;
+ 
+            // agregamos el signo de operación y preparamos para que el usario
+            // pueda digitar el siguiente valor
+            if (!pValor.EndsWith("-") & !pValor.EndsWith("+") & !pValor.EndsWith("*")
                 & !pValor.EndsWith("/") & !pValor.EndsWith("%"))
             {
-                auxiliar = double.Parse(txtPantalla.Text);
-                txtPantSecundaria.Content = txtPantalla.Text + pSigno;
-                txtPantalla.Text = "0";
+                numeroAuxiliar = double.Parse(txtPantallaPrincipal.Text);
+                lblPantallaSecundaria.Content = txtPantallaPrincipal.Text + pSigno;
+                txtPantallaPrincipal.Text = "0";
                 presionarIgual = false;
-
             }
 
-
-            //se tiene en cuenta que txtPantalla sea "0" y que txtPantSecundaria
-            //ya tenga signo al final para cambiarlo por el del parametro
-            else if ((pValor.EndsWith("-") & txtPantalla.Text == "0") |
-               (pValor.EndsWith("+") & txtPantalla.Text == "0") |
-               (pValor.EndsWith("*") & txtPantalla.Text == "0") |
-               (pValor.EndsWith("/") & txtPantalla.Text == "0") |
-               (pValor.EndsWith("%") & txtPantalla.Text == "0"))
+            // Aquí como txtPantallaPrincipal es "0" y lblPantallaSecundaria tiene
+            // signo al final, lo que hacemos simplemente, es cambiar el signo al
+            // final por el que indicó el usuario
+            else if ((pValor.EndsWith("-") | pValor.EndsWith("+") |
+               pValor.EndsWith("*") | pValor.EndsWith("/") |
+               pValor.EndsWith("%")) & txtPantallaPrincipal.Text == "0")
             {
-                List<char> buscandosigno = new List<char>();
-                buscandosigno.AddRange(pValor);
-                buscandosigno.RemoveAt(buscandosigno.Count - 1);
+                List<char> Lista = new List<char>();
+                Lista.AddRange(pValor);
+                Lista.RemoveAt(Lista.Count - 1);
                 pValor = "";
-                foreach (char i in buscandosigno)
+                foreach (char i in Lista)
                 {
                     pValor += i;
                 }
 
-                txtPantSecundaria.Content = pValor + pSigno;
-                buscandosigno.Clear();
+                lblPantallaSecundaria.Content = pValor + pSigno;
+                Lista.Clear();
                 presionarIgual = false;
             }
 
 
-            //presionar operadores funciona tambien como igual
+            // aquí como lblPantallaSecundaria tiene signo aritmético al final y txtPantallaPrincipal
+            // es diferente de "0"y además la variable operador tiene guardado un signo aritmético, realizamos calculo para obtener un resultado
             else
             {
                 EscogerOperacion();
-                txtPantSecundaria.Content = resultado.ToString() + pSigno;
-                auxiliar = resultado;
-                resultado = 0; // para que esta variable no se cumpla en el if de 'PrimeraVezPresionandoBoton()' 
-                txtPantalla.Text = "0";
+                lblPantallaSecundaria.Content = resultado.ToString() + pSigno;
+                numeroAuxiliar = resultado;
+                resultado = 0; // para que esta variable no se cumpla en el if de 'FiltarBotonesNumericos()' 
+                txtPantallaPrincipal.Text = "0";
                 presionarIgual = true;
             }
 
@@ -266,43 +263,43 @@ namespace Interactuando
         //simbolos matematicos
         private void btnIgual_Click(object sender, RoutedEventArgs e)
         {
-            if(presionarIgual==false)
-                MetodoDelIgual();
-            
+            if (presionarIgual == false)
+                CalcularOperacionAritmetica();
+
         }
 
         private void EscogerOperacion()
         {
             if (operador == "+")
             {
-                resultado = auxiliar + double.Parse(txtPantalla.Text);
+                resultado = numeroAuxiliar + double.Parse(txtPantallaPrincipal.Text);
 
             }
             else if (operador == "-")
             {
-                resultado = auxiliar - double.Parse(txtPantalla.Text);
+                resultado = numeroAuxiliar - double.Parse(txtPantallaPrincipal.Text);
             }
             else if (operador == "*")
             {
-                resultado = auxiliar * double.Parse(txtPantalla.Text);
+                resultado = numeroAuxiliar * double.Parse(txtPantallaPrincipal.Text);
             }
             else if (operador == "/")
             {
-                resultado = auxiliar / double.Parse(txtPantalla.Text);
+                resultado = numeroAuxiliar / double.Parse(txtPantallaPrincipal.Text);
             }
             else if (operador == "%")
             {
-                resultado = auxiliar % double.Parse(txtPantalla.Text);
+                resultado = numeroAuxiliar % double.Parse(txtPantallaPrincipal.Text);
             }
         }
 
-        private void MetodoDelIgual()
+        private void CalcularOperacionAritmetica()
         {
             EscogerOperacion();
 
             presionarIgual = true;
-            txtPantSecundaria.Content += txtPantalla.Text;
-            txtPantalla.Text = resultado.ToString();
+            lblPantallaSecundaria.Content += txtPantallaPrincipal.Text;
+            txtPantallaPrincipal.Text = resultado.ToString();
 
         }
 
@@ -310,11 +307,11 @@ namespace Interactuando
         {
             double numDouble;
 
-            if (txtPantalla.Text != "0")
+            if (txtPantallaPrincipal.Text != "0")
             {
-                numDouble = double.Parse(txtPantalla.Text) * -1;
-                txtPantalla.Text = numDouble.ToString();
-                
+                numDouble = double.Parse(txtPantallaPrincipal.Text) * -1;
+                txtPantallaPrincipal.Text = numDouble.ToString();
+
             }
         }
 
@@ -327,13 +324,13 @@ namespace Interactuando
         {
             try
             {
-                //de esta manera evito que se coloque mas de 2 puntos decimales
-                string ayuda = txtPantalla.Text + ",";
+                //de esta manera se evita que se pueda colocar mas de 2 puntos decimales
+                string ayuda = txtPantallaPrincipal.Text + ".";
                 double x = double.Parse(ayuda);
 
                 if (x % 1 == 0)
                 {
-                    txtPantalla.Text += ",";
+                    txtPantallaPrincipal.Text += ".";
                 }
             }
             catch (FormatException)
@@ -342,17 +339,20 @@ namespace Interactuando
             }
         }
 
+        #region "Cuando presionamos las teclas del teclado"
+
+
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
             if (e.Key == System.Windows.Input.Key.Back)
             {
-                MetodoBorrar();
+                BorrarUltimoNumeroDigitado();
             }
 
             else if (e.Key == System.Windows.Input.Key.Delete)
             {
-                MetodoBorrarTodo();
+                LimpiarCalculadora();
             }
 
 
@@ -391,9 +391,9 @@ namespace Interactuando
 
             else if (e.Key == System.Windows.Input.Key.NumPad0)
             {
-                if (txtPantalla.Text != "0")
+                if (txtPantallaPrincipal.Text != "0")
                 {
-                    txtPantalla.Text += 0;
+                    txtPantallaPrincipal.Text += 0;
                 }
                 else
                 {
@@ -402,54 +402,54 @@ namespace Interactuando
 
             else if (e.Key == System.Windows.Input.Key.NumPad1)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 1;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 1;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad2)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 2;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 2;
             }
             else if (e.Key == System.Windows.Input.Key.NumPad3)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 3;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 3;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad4)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 4;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 4;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad5)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 5;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 5;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad6)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 6;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 6;
             }
             else if (e.Key == System.Windows.Input.Key.NumPad7)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 7;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 7;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad8)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 8;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 8;
             }
 
             else if (e.Key == System.Windows.Input.Key.NumPad9)
             {
-                PrimeraVezPresionandoBoton();
-                txtPantalla.Text += 9;
+                FiltarBotonesNumericos();
+                txtPantallaPrincipal.Text += 9;
             }
 
             else if (e.Key == System.Windows.Input.Key.Decimal)
@@ -476,8 +476,10 @@ namespace Interactuando
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-               MetodoDelIgual();
+                CalcularOperacionAritmetica();
             }
         }
+
+        #endregion 
     }
 }
