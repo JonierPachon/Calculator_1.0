@@ -21,9 +21,10 @@ namespace Interactuando
         private void FiltarBotonesNumericos()
         {
             // Verificamos si se realizó operacion matemática en la calculadora
-            if (calculadora.CalculoRealizado == true &
+            if ((calculadora.CalculoRealizado == true &
                 calculadora.Resultado != 0 & 
-                calculadora.NumeroAuxiliar != 0)
+                calculadora.NumeroAuxiliar != 0) | 
+                txtPantallaPrincipal.Text.ToLower() == "nan")
             {
                 lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
                 txtPantallaPrincipal.Text = "";
@@ -40,7 +41,12 @@ namespace Interactuando
 
         private void btn0_Click(object sender, RoutedEventArgs e)
         {
-            if (txtPantallaPrincipal.Text != "0")
+            if (txtPantallaPrincipal.Text.ToLower() == "nan")
+            {
+                lblPantallaSecundaria.Content = "0";
+                txtPantallaPrincipal.Text = "0";
+            }
+            else if (txtPantallaPrincipal.Text != "0")
             {
                 txtPantallaPrincipal.Text += 0;
             }
@@ -106,8 +112,6 @@ namespace Interactuando
             FiltarBotonesNumericos();
             txtPantallaPrincipal.Text += 9;
         }
-
-
         #endregion
 
         private void LimpiarCalculadora()
@@ -124,7 +128,15 @@ namespace Interactuando
 
         private void BorrarUltimoNumeroDigitado()
         {
-            txtPantallaPrincipal.Text = calculadora.BorrarUltimoNumeroDigitado(txtPantallaPrincipal.Text);
+            if (txtPantallaPrincipal.Text.ToLower() == "nan")
+            {
+                txtPantallaPrincipal.Text = "0";
+                lblPantallaSecundaria.Content = "0";
+            }
+            else
+            {
+                txtPantallaPrincipal.Text = calculadora.BorrarUltimoNumeroDigitado(txtPantallaPrincipal.Text);
+            }
         }
         private void btnBorrarUltimoNumeroDigitado_Click(object sender, RoutedEventArgs e)
         {
@@ -136,10 +148,19 @@ namespace Interactuando
 
         private void Operacion(string pSigno)
         {
-            calculadora.RealizarOperacion(pSigno, txtPantallaPrincipal.Text, lblPantallaSecundaria.Content.ToString());
+            if (txtPantallaPrincipal.Text.ToLower() == "nan")
+            {
+                lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
+                txtPantallaPrincipal.Text = "0";
+            }
+            else
+            {
+                calculadora.RealizarOperacion(pSigno, txtPantallaPrincipal.Text, lblPantallaSecundaria.Content.ToString());
 
-            txtPantallaPrincipal.Text = calculadora.NumeroPantallaPrincipal;
-            lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
+                txtPantallaPrincipal.Text = calculadora.NumeroPantallaPrincipal;
+                lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
+
+            }
         }
 
         private void btnSumar_Click(object sender, RoutedEventArgs e)
@@ -172,6 +193,8 @@ namespace Interactuando
 
             lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
             txtPantallaPrincipal.Text = calculadora.Resultado.ToString();
+
+            
         }
 
         private void btnIgual_Click(object sender, RoutedEventArgs e)
@@ -183,7 +206,29 @@ namespace Interactuando
 
         private void btnConvertidor_Click(object sender, RoutedEventArgs e)
         {
+            /*
+             if (calculadora.CalculoRealizado == true &
+                calculadora.Resultado != 0 & 
+                calculadora.NumeroAuxiliar != 0)
+            {
+                lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
+                txtPantallaPrincipal.Text = "";
+                calculadora.Resultado = 0;
+                calculadora.NumeroAuxiliar = 0;
+                calculadora.CalculoRealizado = false;
+            }
+             */
+
             txtPantallaPrincipal.Text = calculadora.ConvertidorNegativoPositivo(txtPantallaPrincipal.Text);
+
+
+            //if (txtPantallaPrincipal.Text.ToLower() == "nan")
+            //{
+            //    btnSumar.IsEnabled = false;
+            //    btnSumar.IsEnabled = false;
+            //    btnSumar.IsEnabled = false;
+            //    btnSumar.IsEnabled = false;
+            //}
         }
 
         private void btnDecimal_Click(object sender, RoutedEventArgs e)
@@ -243,12 +288,13 @@ namespace Interactuando
 
             else if (e.Key == System.Windows.Input.Key.NumPad0)
             {
-                if (txtPantallaPrincipal.Text != "0")
+                if (txtPantallaPrincipal.Text.ToLower() == "nan")
+                {
+                    txtPantallaPrincipal.Text = "0";
+                }
+                else if (txtPantallaPrincipal.Text != "0")
                 {
                     txtPantallaPrincipal.Text += 0;
-                }
-                else
-                {
                 }
             }
 

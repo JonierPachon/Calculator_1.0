@@ -12,7 +12,7 @@ namespace Interactuando.Models
         string signoAritmetico;
         double resultado;
         string numeroPantallaSecundaria, numeroPantallaPrincipal;
-        bool calculoRealizado = false; //hace referencia ha si se ha dado click en igual
+        bool calculoRealizado = false;
 
         public bool CalculoRealizado { get => calculoRealizado; set => calculoRealizado = value; }
         public double NumeroAuxiliar { get => numeroAuxiliar; set => numeroAuxiliar = value; }
@@ -29,12 +29,12 @@ namespace Interactuando.Models
 
         public string BorrarUltimoNumeroDigitado(string pNumeroPantallaPrincipal)
         {
-            if ((pNumeroPantallaPrincipal).ToLower() == "nan")
-            {
-                pNumeroPantallaPrincipal = "0";
-            }
+            //if ((pNumeroPantallaPrincipal).ToLower() == "nan")
+            //{
+            //    pNumeroPantallaPrincipal = "0";
+            //}
 
-            else if (pNumeroPantallaPrincipal != "" & pNumeroPantallaPrincipal != "0")
+            if (pNumeroPantallaPrincipal != "0")
             {
                 List<char> NumBorrar = new List<char>();
 
@@ -52,8 +52,7 @@ namespace Interactuando.Models
                         pNumeroPantallaPrincipal += x;
 
                     }
-                }
-                //para que si queda solo un dígito y se borra, la pantalla no quede sin números
+                }//para que si queda solo un dígito y se borra, la pantalla no quede sin números
                 else pNumeroPantallaPrincipal = "0";
 
                 NumBorrar.Clear();
@@ -71,7 +70,9 @@ namespace Interactuando.Models
             numeroPantallaPrincipal = pNumeroPantallaPrincipal;
 
             // agregamos el signo de operación en la pantalla secundaria y preparamos
-            // para que el usario pueda digitar el siguiente valor
+            // para que el usario pueda digitar el siguiente valor. Ésto también aplica
+            // para cuando se obtiene un resultado presionando igual ya que éste aparece en la
+            // pantalla secundaria de la siguiente manera "valor"
             if (!pNumeroPantallaSecundaria.EndsWith("-") 
                 & !pNumeroPantallaSecundaria.EndsWith("+") 
                 & !pNumeroPantallaSecundaria.EndsWith("*")
@@ -158,11 +159,14 @@ namespace Interactuando.Models
         {
             try
             {
-                //de esta manera se evita que se pueda colocar mas de 2 puntos decimales
-                string ayuda = pNumeroPantallaPrincipal + ".";
-                double x = double.Parse(ayuda);
+                //de esta manera se evita que se pueda colocar mas 2 o mas puntos decimales
+                //y también que se quiera agregar otro punto decimal, después de un
+                //número digitado después del punto
+                
+                double n = double.Parse(pNumeroPantallaPrincipal + ".");
 
-                if (x % 1 == 0)
+                // para saber si es decimal
+                if (n % 1 == 0)
                 {
                     pNumeroPantallaPrincipal += ".";
                 }
