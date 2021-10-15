@@ -119,7 +119,7 @@ namespace Interactuando
             LimpiarCalculadora();
         }
 
-
+        //esta ya
         private void LimpiarCalculadora()
         {
             //reiniciamos valores
@@ -134,6 +134,7 @@ namespace Interactuando
             BorrarUltimoNumeroDigitado();
         }
 
+        //esta ya
         private void BorrarUltimoNumeroDigitado()
         {
             if ((txtPantallaPrincipal.Text).ToLower() == "nan")
@@ -202,6 +203,7 @@ namespace Interactuando
 
         #endregion
 
+        // este ya
         private void operacion(string pSigno)
         {
             // aquí el, mas (+), también funciona como el botón igual
@@ -268,6 +270,7 @@ namespace Interactuando
 
         }
 
+        // esta ya
         private void EscogerOperacion()
         {
             if (operador == "+")
@@ -293,6 +296,7 @@ namespace Interactuando
             }
         }
 
+        //esta ya
         private void CalcularOperacionAritmetica()
         {
             EscogerOperacion();
