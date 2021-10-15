@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Interactuando.Models;
 //using System.Windows.
 
 namespace Interactuando
 {
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        double numeroAuxiliar;
-        double resultado;
-        string operador = "";
-        bool presionarIgual = false;//hace referencia ha si se ha dado click en igual 
-
+        OperacionesBasicas calculadora = new OperacionesBasicas();
         public MainWindow()
         {
             InitializeComponent();
@@ -22,17 +16,17 @@ namespace Interactuando
 
         #region BotonesDelCeroAlNueve
 
-        //cuando se presiona el nuemero por primera vez y
+        //cuando se presiona el numero por primera vez y
         //y cuando realizo operaciones
         private void FiltarBotonesNumericos()
         {
             // Verificamos si se realizó operacion matemática en la calculadora
-            if (presionarIgual == true & resultado != 0 & numeroAuxiliar != 0)
+            if (calculadora.PresionarIgual == true & calculadora.Resultado != 0 & calculadora.NumeroAuxiliar != 0)
             {
                 lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
                 txtPantallaPrincipal.Text = "";
-                resultado = 0;
-                numeroAuxiliar = 0;
+                calculadora.Resultado = 0;
+                calculadora.NumeroAuxiliar = 0;
             }
 
             else if (txtPantallaPrincipal.Text == "0")
@@ -113,198 +107,76 @@ namespace Interactuando
 
         #endregion
 
-
+        private void LimpiarCalculadora()
+        {
+            calculadora.LimpiarCalculadora();
+            txtPantallaPrincipal.Text = "0";
+            lblPantallaSecundaria.Content = "0";
+        }
         private void btnLimpiarcalculadora_Click(object sender, RoutedEventArgs e)
         {
             LimpiarCalculadora();
         }
 
-        //esta ya
-        private void LimpiarCalculadora()
-        {
-            //reiniciamos valores
-            numeroAuxiliar = 0;
-            resultado = 0;
-            txtPantallaPrincipal.Text = "0";
-            lblPantallaSecundaria.Content = "0";
-        }
 
+        private void BorrarUltimoNumeroDigitado()
+        {
+            txtPantallaPrincipal.Text = calculadora.BorrarUltimoNumeroDigitado(txtPantallaPrincipal.Text);
+        }
         private void btnBorrarUltimoNumeroDigitado_Click(object sender, RoutedEventArgs e)
         {
             BorrarUltimoNumeroDigitado();
         }
 
-        //esta ya
-        private void BorrarUltimoNumeroDigitado()
-        {
-            if ((txtPantallaPrincipal.Text).ToLower() == "nan")
-            {
-                txtPantallaPrincipal.Text = "0";
-            }
-            else if (txtPantallaPrincipal.Text != "" & txtPantallaPrincipal.Text != "0")
-            {
-                List<char> NumBorrar = new List<char>();
-
-                NumBorrar.AddRange(txtPantallaPrincipal.Text);
-
-                NumBorrar.RemoveAt(NumBorrar.Count - 1);
-
-                txtPantallaPrincipal.Text = "";
-
-                if (NumBorrar.Count > 0)
-                {
-                    foreach (char x in NumBorrar)
-                    {
-
-                        txtPantallaPrincipal.Text += x;
-
-                    }
-                }
-
-                else txtPantallaPrincipal.Text = "0";//cuando se elimina un unico elemento 
-                //txtPantallaPrincipal queda vacio, por esto coloco el "else"
-
-                NumBorrar.Clear();
-
-            }
-        }
-
-
 
         #region OperacionesMatemáticas
 
-        
+        private void Operacion(string pSigno)
+        {
+            calculadora.RealizarOperacion(pSigno, txtPantallaPrincipal.Text, lblPantallaSecundaria.Content.ToString());
+
+            txtPantallaPrincipal.Text = calculadora.NumeroPantallaPrincipal;
+            lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
+        }
 
         private void btnSumar_Click(object sender, RoutedEventArgs e)
         {
-            operacion("+");
+            Operacion("+");
         }
 
         private void btnRestar_Click(object sender, RoutedEventArgs e)
         {
-            operacion("-");
+            Operacion("-");
         }
 
         private void btnMultiplicar_Click(object sender, RoutedEventArgs e)
         {
-            operacion("*");
-
+            Operacion("*");
         }
 
         private void btnDividir_Click(object sender, RoutedEventArgs e)
         {
-            operacion("/");
+            Operacion("/");
         }
 
-        private void btnResiduo_Click_1(object sender, RoutedEventArgs e)
-        {
-            operacion("%");
-        }
 
         #endregion
-
-        // este ya
-        private void operacion(string pSigno)
-        {
-            // aquí el, mas (+), también funciona como el botón igual
-            // ya que también nos puede dar el resultado
-
-            string pValor = (string)lblPantallaSecundaria.Content;
- 
-            // agregamos el signo de operación y preparamos para que el usario
-            // pueda digitar el siguiente valor
-            if (!pValor.EndsWith("-") & !pValor.EndsWith("+") & !pValor.EndsWith("*")
-                & !pValor.EndsWith("/") & !pValor.EndsWith("%"))
-            {
-                numeroAuxiliar = double.Parse(txtPantallaPrincipal.Text);
-                lblPantallaSecundaria.Content = txtPantallaPrincipal.Text + pSigno;
-                txtPantallaPrincipal.Text = "0";
-                presionarIgual = false;
-            }
-
-            // Aquí como txtPantallaPrincipal es "0" y lblPantallaSecundaria tiene
-            // signo al final, lo que hacemos simplemente, es cambiar el signo al
-            // final por el que indicó el usuario
-            else if ((pValor.EndsWith("-") | pValor.EndsWith("+") |
-               pValor.EndsWith("*") | pValor.EndsWith("/") |
-               pValor.EndsWith("%")) & txtPantallaPrincipal.Text == "0")
-            {
-                List<char> Lista = new List<char>();
-                Lista.AddRange(pValor);
-                Lista.RemoveAt(Lista.Count - 1);
-                pValor = "";
-                foreach (char i in Lista)
-                {
-                    pValor += i;
-                }
-
-                lblPantallaSecundaria.Content = pValor + pSigno;
-                Lista.Clear();
-                presionarIgual = false;
-            }
-
-
-            // aquí como lblPantallaSecundaria tiene signo aritmético al final y txtPantallaPrincipal
-            // es diferente de "0"y además la variable operador tiene guardado un signo aritmético, realizamos calculo para obtener un resultado
-            else
-            {
-                EscogerOperacion();
-                lblPantallaSecundaria.Content = resultado.ToString() + pSigno;
-                numeroAuxiliar = resultado;
-                resultado = 0; // para que esta variable no se cumpla en el if de 'FiltarBotonesNumericos()' 
-                txtPantallaPrincipal.Text = "0";
-                presionarIgual = true;
-            }
-
-            operador = pSigno;
-
-        }
-
 
 
         //simbolos matematicos
         private void btnIgual_Click(object sender, RoutedEventArgs e)
         {
-            if (presionarIgual == false)
-                CalcularOperacionAritmetica();
+            CalcularOperacionAritmetica();
 
         }
 
-        // esta ya
-        private void EscogerOperacion()
-        {
-            if (operador == "+")
-            {
-                resultado = numeroAuxiliar + double.Parse(txtPantallaPrincipal.Text);
-
-            }
-            else if (operador == "-")
-            {
-                resultado = numeroAuxiliar - double.Parse(txtPantallaPrincipal.Text);
-            }
-            else if (operador == "*")
-            {
-                resultado = numeroAuxiliar * double.Parse(txtPantallaPrincipal.Text);
-            }
-            else if (operador == "/")
-            {
-                resultado = numeroAuxiliar / double.Parse(txtPantallaPrincipal.Text);
-            }
-            else if (operador == "%")
-            {
-                resultado = numeroAuxiliar % double.Parse(txtPantallaPrincipal.Text);
-            }
-        }
-
-        //esta ya
         private void CalcularOperacionAritmetica()
         {
-            EscogerOperacion();
+            if (calculadora.PresionarIgual == false)
+                calculadora.CalcularOperacionAritmetica(txtPantallaPrincipal.Text,lblPantallaSecundaria.Content.ToString());
 
-            presionarIgual = true;
-            lblPantallaSecundaria.Content += txtPantallaPrincipal.Text;
-            txtPantallaPrincipal.Text = resultado.ToString();
-
+            lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
+            txtPantallaPrincipal.Text = calculadora.Resultado.ToString();
         }
 
         private void btnConvertidor_Click(object sender, RoutedEventArgs e)
@@ -343,20 +215,21 @@ namespace Interactuando
             }
         }
 
+
         #region "Cuando presionamos las teclas del teclado"
-
-
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
 
             if (e.Key == System.Windows.Input.Key.Back)
             {
-                BorrarUltimoNumeroDigitado();
+                txtPantallaPrincipal.Text = calculadora.BorrarUltimoNumeroDigitado(txtPantallaPrincipal.Text);
             }
 
             else if (e.Key == System.Windows.Input.Key.Delete)
             {
-                LimpiarCalculadora();
+                calculadora.LimpiarCalculadora();
+                txtPantallaPrincipal.Text = "0";
+                lblPantallaSecundaria.Content = "0";
             }
 
 
@@ -366,27 +239,22 @@ namespace Interactuando
 
             else if (e.Key == System.Windows.Input.Key.Add)
             {
-                operacion("+");
+                Operacion("+");
             }
 
             else if (e.Key == System.Windows.Input.Key.Subtract)
             {
-                operacion("-");
+                Operacion("-");
             }
 
             else if (e.Key == System.Windows.Input.Key.Multiply)
             {
-                operacion("*");
+                Operacion("*");
             }
 
             else if (e.Key == System.Windows.Input.Key.Divide)
             {
-                operacion("/");
-            }
-
-            else if (e.Key == System.Windows.Input.Key.D5)
-            {
-                operacion("%");
+                Operacion("/");
             }
 
 

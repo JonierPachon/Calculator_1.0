@@ -15,58 +15,58 @@ namespace Interactuando.Models
         bool presionarIgual = false; //hace referencia ha si se ha dado click en igual
 
         //public double NumeroAuxiliar { set { numeroAuxiliar = value; } }
+        public bool PresionarIgual { get => presionarIgual; set => presionarIgual = value; }
+        public double NumeroAuxiliar { get => numeroAuxiliar; set => numeroAuxiliar = value; }
+        public double Resultado { get { return resultado; } set => resultado = value; }
         public string NumeroPantallaSecundaria { get=> numeroPantallaSecundaria;  }
         public string NumeroPantallaPrincipal { get => numeroPantallaPrincipal; }
-        public string SignoAritmetico{ set { signoAritmetico = value; } }
-        public double Resultado { get { return resultado; } }
 
         public void LimpiarCalculadora()
         {
             //reiniciamos valores
             numeroAuxiliar = 0;
             resultado = 0;
-            //txtPantallaPrincipal.Text = "0";
-            //lblPantallaSecundaria.Content = "0";
         }
-        public string BorrarUltimoNumeroDigitado(string numeroPantallaPrincipal)
+
+        public string BorrarUltimoNumeroDigitado(string pNumeroPantallaPrincipal)
         {
-            if ((numeroPantallaPrincipal).ToLower() == "nan")
+            if ((pNumeroPantallaPrincipal).ToLower() == "nan")
             {
-                numeroPantallaPrincipal = "0";
+                pNumeroPantallaPrincipal = "0";
             }
 
-            else if (numeroPantallaPrincipal != "" & numeroPantallaPrincipal != "0")
+            else if (pNumeroPantallaPrincipal != "" & pNumeroPantallaPrincipal != "0")
             {
                 List<char> NumBorrar = new List<char>();
 
-                NumBorrar.AddRange(numeroPantallaPrincipal);
+                NumBorrar.AddRange(pNumeroPantallaPrincipal);
 
                 NumBorrar.RemoveAt(NumBorrar.Count - 1);
 
-                numeroPantallaPrincipal = "";
+                pNumeroPantallaPrincipal = "";
 
                 if (NumBorrar.Count > 0)
                 {
                     foreach (char x in NumBorrar)
                     {
 
-                        numeroPantallaPrincipal += x;
+                        pNumeroPantallaPrincipal += x;
 
                     }
                 }
 
-                else numeroPantallaPrincipal = "0";//cuando se elimina un unico elemento 
+                else pNumeroPantallaPrincipal = "0";//cuando se elimina un unico elemento 
                 //txtPantallaPrincipal queda vacio, por esto coloco el "else"
 
                 NumBorrar.Clear();
 
             }
 
-            return numeroPantallaPrincipal;
+            return pNumeroPantallaPrincipal;
         }
 
         //operacion()
-        public void Realizarcalculo(string pNumeroPantallaSecundaria, string pNumeroPantallaPrincipal, string pSigno)
+        public void RealizarOperacion(string pSigno, string pNumeroPantallaPrincipal, string pNumeroPantallaSecundaria)
         {
             numeroPantallaPrincipal = pNumeroPantallaPrincipal;
             numeroPantallaSecundaria = pNumeroPantallaSecundaria;
@@ -79,7 +79,7 @@ namespace Interactuando.Models
             // agregamos el signo de operación y preparamos para que el usario
             // pueda digitar el siguiente valor
             if (!pValor.EndsWith("-") & !pValor.EndsWith("+") & !pValor.EndsWith("*")
-                & !pValor.EndsWith("/") & !pValor.EndsWith("%"))
+                & !pValor.EndsWith("/"))
             {
                 numeroAuxiliar = double.Parse(numeroPantallaPrincipal);
                 numeroPantallaSecundaria = numeroPantallaPrincipal + pSigno;
@@ -91,8 +91,7 @@ namespace Interactuando.Models
             // signo al final, lo que hacemos simplemente, es cambiar el signo al
             // final por el que indicó el usuario
             else if ((pValor.EndsWith("-") | pValor.EndsWith("+") |
-               pValor.EndsWith("*") | pValor.EndsWith("/") |
-               pValor.EndsWith("%")) & numeroPantallaPrincipal == "0")
+               pValor.EndsWith("*") | pValor.EndsWith("/")) & numeroPantallaPrincipal == "0")
             {
                 List<char> Lista = new List<char>();
                 Lista.AddRange(pValor);
@@ -144,14 +143,12 @@ namespace Interactuando.Models
             {
                 resultado = numeroAuxiliar / double.Parse(numeroPantallaPrincipal);
             }
-            else if (signoAritmetico == "%")
-            {
-                resultado = numeroAuxiliar % double.Parse(numeroPantallaPrincipal);
-            }
         }
 
-        private void CalcularOperacionAritmetica()
+        public void CalcularOperacionAritmetica(string pNumeroPantallaPrincipal, string pNumeroPantallaSecunddaria)
         {
+            numeroPantallaPrincipal = pNumeroPantallaPrincipal;
+            numeroPantallaSecundaria = pNumeroPantallaSecunddaria;
             EscogerOperacion();
             presionarIgual = true;
             numeroPantallaSecundaria += numeroPantallaPrincipal;
