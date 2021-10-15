@@ -8,7 +8,7 @@ namespace Interactuando
 {
     public partial class MainWindow : Window
     {
-        OperacionesBasicas calculadora = new OperacionesBasicas();
+        CalculadoraBasica calculadora = new CalculadoraBasica();
         public MainWindow()
         {
             InitializeComponent();
@@ -21,12 +21,15 @@ namespace Interactuando
         private void FiltarBotonesNumericos()
         {
             // Verificamos si se realizó operacion matemática en la calculadora
-            if (calculadora.PresionarIgual == true & calculadora.Resultado != 0 & calculadora.NumeroAuxiliar != 0)
+            if (calculadora.CalculoRealizado == true &
+                calculadora.Resultado != 0 & 
+                calculadora.NumeroAuxiliar != 0)
             {
                 lblPantallaSecundaria.Content = '"' + txtPantallaPrincipal.Text + '"';
                 txtPantallaPrincipal.Text = "";
                 calculadora.Resultado = 0;
                 calculadora.NumeroAuxiliar = 0;
+                calculadora.CalculoRealizado = false;
             }
 
             else if (txtPantallaPrincipal.Text == "0")
@@ -162,33 +165,25 @@ namespace Interactuando
 
         #endregion
 
-
-        //simbolos matematicos
-        private void btnIgual_Click(object sender, RoutedEventArgs e)
-        {
-            CalcularOperacionAritmetica();
-
-        }
-
         private void CalcularOperacionAritmetica()
         {
-            if (calculadora.PresionarIgual == false)
+            if (calculadora.CalculoRealizado == false)
                 calculadora.CalcularOperacionAritmetica(txtPantallaPrincipal.Text,lblPantallaSecundaria.Content.ToString());
 
             lblPantallaSecundaria.Content = calculadora.NumeroPantallaSecundaria;
             txtPantallaPrincipal.Text = calculadora.Resultado.ToString();
         }
 
+        private void btnIgual_Click(object sender, RoutedEventArgs e)
+        {
+            CalcularOperacionAritmetica();
+
+        }
+
+
         private void btnConvertidor_Click(object sender, RoutedEventArgs e)
         {
-            double numDouble;
-
-            if (txtPantallaPrincipal.Text != "0")
-            {
-                numDouble = double.Parse(txtPantallaPrincipal.Text) * -1;
-                txtPantallaPrincipal.Text = numDouble.ToString();
-
-            }
+            txtPantallaPrincipal.Text = calculadora.ConvertidorNegativoPositivo(txtPantallaPrincipal.Text);
         }
 
         private void btnDecimal_Click(object sender, RoutedEventArgs e)
@@ -196,23 +191,10 @@ namespace Interactuando
             PuntoDecimal();
         }
 
+        //ya esta
         private void PuntoDecimal()
         {
-            try
-            {
-                //de esta manera se evita que se pueda colocar mas de 2 puntos decimales
-                string ayuda = txtPantallaPrincipal.Text + ".";
-                double x = double.Parse(ayuda);
-
-                if (x % 1 == 0)
-                {
-                    txtPantallaPrincipal.Text += ".";
-                }
-            }
-            catch (FormatException)
-            {
-
-            }
+            txtPantallaPrincipal.Text = calculadora.FiltroPuntoDecimal(txtPantallaPrincipal.Text);
         }
 
 
@@ -222,14 +204,12 @@ namespace Interactuando
 
             if (e.Key == System.Windows.Input.Key.Back)
             {
-                txtPantallaPrincipal.Text = calculadora.BorrarUltimoNumeroDigitado(txtPantallaPrincipal.Text);
+                BorrarUltimoNumeroDigitado();
             }
 
             else if (e.Key == System.Windows.Input.Key.Delete)
             {
-                calculadora.LimpiarCalculadora();
-                txtPantallaPrincipal.Text = "0";
-                lblPantallaSecundaria.Content = "0";
+                LimpiarCalculadora();
             }
 
 
