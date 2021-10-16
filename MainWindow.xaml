@@ -32,18 +32,38 @@
                     <RowDefinition Height="*" ></RowDefinition>
                     <RowDefinition Height="*" ></RowDefinition>
 
-
-
                 </Grid.RowDefinitions>
 
-                <StackPanel Background="Black" Grid.Row="0" Grid.ColumnSpan="4">
+                <Grid Grid.Row="0" Grid.ColumnSpan="4" Background="Black">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0">
+                        <StackPanel>
+                            <TextBlock x:Name="txtPantallaSecundaria" FontSize="25" Foreground="white"
+                               TextAlignment="Right" TextWrapping="Wrap" Text="0">
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel>
+                            <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="white" 
+                                    TextAlignment="Right" Text="0" TextWrapping="Wrap">
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!--<StackPanel Background="Black" Grid.Row="0" Grid.ColumnSpan="4">
 
                     <Label Name="lblPantallaSecundaria" Foreground="white" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Top">0</Label>
 
-                    <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right">0</TextBlock>
+                    <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right">0</TextBlock>-->
 
-                </StackPanel>
-
+                    
+                 
 
                 <Button Name="btn1" Click="btn1_Click" BorderThickness="1" Grid.Column="0" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black">1</Button>
                 <Button Name="btn2" Click="btn2_Click" BorderThickness="1" Grid.Column="1" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black">2</Button>
