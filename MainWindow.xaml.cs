@@ -107,7 +107,6 @@ namespace Interactuando
 
       private void LimpiarCalculadora()
       {
-         calculadora.LimpiarCalculadora();
          txtPantallaPrincipal.Text = "0";
          txtPantallaSecundaria.Text = "0";
          calculadora.CalculoRealizado = false;

@@ -14,20 +14,8 @@ namespace Interactuando.Models
 
       public bool CalculoRealizado { get => calculoRealizado; set => calculoRealizado = value; }
 
-      public void LimpiarCalculadora()
-      {
-         //reiniciamos valores
-         numeroAuxiliar = 0;
-         resultado = 0;
-      }
-
       public string BorrarUltimoNumeroDigitado(string pNumeroPantallaPrincipal)
       {
-         //if ((pNumeroPantallaPrincipal).ToLower() == "nan")
-         //{
-         //    pNumeroPantallaPrincipal = "0";
-         //}
-
          if (pNumeroPantallaPrincipal != "0")
          {
             List<char> NumBorrar = new List<char>();
@@ -54,8 +42,6 @@ namespace Interactuando.Models
 
          return pNumeroPantallaPrincipal;
       }
-
-
 
 
       public (string, string) RealizarOperacion(ref ICalcular pOperacion, string 
@@ -126,6 +112,8 @@ namespace Interactuando.Models
          return (numeroPantallaPrincipal, numeroPantallaSecundaria);
 
       }
+
+
       public (string,string) CalcularOperacionAritmetica(ref ICalcular pOperacion, string pNumeroPantallaPrincipal)
       {
          numeroPantallaPrincipal = pNumeroPantallaPrincipal;
