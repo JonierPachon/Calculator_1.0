@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Interactuando.Interfaces;
 using Interactuando.Models;
 //using System.Windows.
 
@@ -8,6 +9,7 @@ namespace Interactuando
 {
    public partial class MainWindow : Window
    {
+      ICalcular operacion;
       CalculadoraBasica calculadora = new CalculadoraBasica();
       public MainWindow()
       {
@@ -21,16 +23,12 @@ namespace Interactuando
       private void FiltarBotonesNumericos()
       {
          // Verificamos si se realizó operacion matemática en la calculadora
-         if ((calculadora.CalculoRealizado == true &
-               calculadora.Resultado != 0 & 
-               calculadora.NumeroAuxiliar != 0) | 
+         if (calculadora.CalculoRealizado | 
                txtPantallaPrincipal.Text.ToLower() == "nan")
          {
             txtPantallaSecundaria.Text = '"' + txtPantallaPrincipal.Text + '"';
             txtPantallaPrincipal.Text = "";
-            calculadora.Resultado = 0;
-            calculadora.NumeroAuxiliar = 0;
-            //calculadora.CalculoRealizado = false;
+            calculadora.CalculoRealizado = false;
          }
 
          else if (txtPantallaPrincipal.Text == "0")
@@ -56,43 +54,36 @@ namespace Interactuando
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 1;
-
-
       }
 
       private void btn2_Click(object sender, RoutedEventArgs e)
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 2;
-
       }
 
       private void btn3_Click(object sender, RoutedEventArgs e)
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 3;
-
       }
 
       private void btn4_Click(object sender, RoutedEventArgs e)
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 4;
-
       }
 
       private void btn5_Click(object sender, RoutedEventArgs e)
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 5;
-
       }
 
       private void btn6_Click(object sender, RoutedEventArgs e)
       {
          FiltarBotonesNumericos();
          txtPantallaPrincipal.Text += 6;
-
       }
 
       private void btn7_Click(object sender, RoutedEventArgs e)
@@ -119,6 +110,7 @@ namespace Interactuando
          calculadora.LimpiarCalculadora();
          txtPantallaPrincipal.Text = "0";
          txtPantallaSecundaria.Text = "0";
+         calculadora.CalculoRealizado = false;
       }
       private void btnLimpiarcalculadora_Click(object sender, RoutedEventArgs e)
       {
@@ -128,10 +120,11 @@ namespace Interactuando
 
       private void BorrarUltimoNumeroDigitado()
       {
-         if (txtPantallaPrincipal.Text.ToLower() == "nan")
+         if (txtPantallaPrincipal.Text.ToLower() == "nan" |
+               calculadora.CalculoRealizado)
          {
+            txtPantallaSecundaria.Text = '"'+txtPantallaPrincipal.Text+'"';
             txtPantallaPrincipal.Text = "0";
-            txtPantallaSecundaria.Text = "0";
          }
          else
          {
@@ -146,7 +139,28 @@ namespace Interactuando
 
       #region OperacionesMatemáticas
 
-      private void Operacion(string pSigno)
+      private void Sumar()
+      {
+         operacion = new Sumar();
+         Operacion(ref operacion);
+      }
+
+      private void Restar()
+      {
+         operacion = new Restar();
+         Operacion(ref operacion);
+      }
+      private void Multiplicar()
+      {
+         operacion = new Multiplicar();
+         Operacion(ref operacion);
+      }
+      private void Dividir()
+      {
+         operacion = new Dividir();
+         Operacion(ref operacion);
+      }
+      private void Operacion(ref ICalcular operacion)
       {
          if (txtPantallaPrincipal.Text.ToLower() == "nan")
          {
@@ -155,47 +169,54 @@ namespace Interactuando
          }
          else
          {
-            (txtPantallaPrincipal.Text, txtPantallaSecundaria.Text) 
-            =calculadora.RealizarOperacion(pSigno, txtPantallaPrincipal.Text, txtPantallaSecundaria.Text);
+            calculadora.CalculoRealizado = false;
+            string numero1 = txtPantallaPrincipal.Text;
+            string numero2 = txtPantallaSecundaria.Text;
 
+            (txtPantallaPrincipal.Text, txtPantallaSecundaria.Text)=
+               calculadora.RealizarOperacion(ref operacion,
+            numero1, numero2);
          }
       }
 
       private void btnSumar_Click(object sender, RoutedEventArgs e)
       {
-         Operacion("+");
+         Sumar();
       }
 
+      
       private void btnRestar_Click(object sender, RoutedEventArgs e)
       {
-         Operacion("-");
+         Restar();
       }
 
       private void btnMultiplicar_Click(object sender, RoutedEventArgs e)
       {
-         Operacion("*");
+         Multiplicar();
       }
 
       private void btnDividir_Click(object sender, RoutedEventArgs e)
       {
-         Operacion("/");
+         Dividir();
       }
-
+      
 
       #endregion
 
-      private void CalcularOperacionAritmetica()
+      private void CalcularOperacionAritmetica(ref ICalcular operacion)
       {
          string numeroPrincipal = txtPantallaPrincipal.Text;
-         string numeroSecundario = txtPantallaSecundaria.Text;
 
          if (calculadora.CalculoRealizado == false)
-         (txtPantallaPrincipal.Text,txtPantallaSecundaria.Text) = calculadora.CalcularOperacionAritmetica(numeroPrincipal, numeroSecundario);
+         {
+            (txtPantallaPrincipal.Text,txtPantallaSecundaria.Text) =
+               calculadora.CalcularOperacionAritmetica(ref operacion, numeroPrincipal);
+         }
       }
 
       private void btnIgual_Click(object sender, RoutedEventArgs e)
       {
-         CalcularOperacionAritmetica();
+         CalcularOperacionAritmetica(ref operacion);
 
       }
 
@@ -215,7 +236,7 @@ namespace Interactuando
       }
 
 
-      #region "Cuando presionamos las teclas del teclado"
+      #region "Cuando utilizamos el teclado"
       private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
       {
 
@@ -236,22 +257,22 @@ namespace Interactuando
 
          else if (e.Key == System.Windows.Input.Key.Add)
          {
-            Operacion("+");
+            Sumar();
          }
 
          else if (e.Key == System.Windows.Input.Key.Subtract)
          {
-            Operacion("-");
+            Restar();
          }
 
          else if (e.Key == System.Windows.Input.Key.Multiply)
          {
-            Operacion("*");
+            Multiplicar();
          }
 
          else if (e.Key == System.Windows.Input.Key.Divide)
          {
-            Operacion("/");
+            Dividir();
          }
 
 
@@ -347,7 +368,7 @@ namespace Interactuando
       {
          if (e.Key == System.Windows.Input.Key.Enter)
          {
-               CalcularOperacionAritmetica();
+            CalcularOperacionAritmetica(ref operacion);
          }
       }
 

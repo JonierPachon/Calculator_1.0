@@ -1,22 +1,18 @@
-﻿using System;
+﻿using Interactuando.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Interactuando.Models
 {
    public class CalculadoraBasica
    {
+      ICalcular GuardarUltimaOperacion;
       double numeroAuxiliar;
-      string signoAritmetico;
       double resultado;
       string numeroPantallaSecundaria, numeroPantallaPrincipal;
       bool calculoRealizado = false;
 
       public bool CalculoRealizado { get => calculoRealizado; set => calculoRealizado = value; }
-      public double NumeroAuxiliar { get => numeroAuxiliar; set => numeroAuxiliar = value; }
-      public double Resultado { get { return resultado; } set => resultado = value; }
 
       public void LimpiarCalculadora()
       {
@@ -60,41 +56,42 @@ namespace Interactuando.Models
       }
 
 
-      public (string, string) RealizarOperacion(string pSigno, string pNumeroPantallaPrincipal, string pNumeroPantallaSecundaria)
+
+
+      public (string, string) RealizarOperacion(ref ICalcular pOperacion, string 
+               pNumeroPantallaPrincipal, string pNumeroPantallaSecundaria)
       {
-         // aquí el, mas (+), también funciona como el botón igual
-         // ya que también nos puede dar el resultado
+         // aquí también podemos obtener un resultado de operacion cuando
+         // presionamos en la calculadora los signos aritméticos
 
          numeroPantallaPrincipal = pNumeroPantallaPrincipal;
+         numeroPantallaSecundaria = pNumeroPantallaSecundaria;
+         string listaNumeros = "0123456789"+'"';
 
          // agregamos el signo de operación en la pantalla secundaria y preparamos
-         // para que el usario pueda digitar el siguiente valor. Ésto también aplica
-         // para cuando se obtiene un resultado presionando igual ya que éste aparece en la
-         // pantalla secundaria de la siguiente manera "valor"
-         if (!pNumeroPantallaSecundaria.EndsWith("-") 
-               & !pNumeroPantallaSecundaria.EndsWith("+") 
-               & !pNumeroPantallaSecundaria.EndsWith("*")
-               & !pNumeroPantallaSecundaria.EndsWith("/"))
+         // para que el usario pueda digitar el siguiente valor.
+         // Ésto también aplica para cuando se obtiene un resultado presionando igual ya que
+         // éste aparece en la pantalla secundaria de la siguiente manera "valor"
+
+
+         if (listaNumeros.Contains(numeroPantallaSecundaria.Substring(numeroPantallaSecundaria.Length - 1)))
          {
             numeroAuxiliar = double.Parse(numeroPantallaPrincipal);
-            numeroPantallaSecundaria = numeroPantallaPrincipal + pSigno;
+            numeroPantallaSecundaria = numeroPantallaPrincipal + pOperacion.GetSigno();
             numeroPantallaPrincipal = "0";
-            calculoRealizado = false;
+            GuardarUltimaOperacion = pOperacion;
          }
 
          // Aquí como el digito de la pantalla principal es "0" y la pantalla secundaria tiene
          // signo al final, lo que hacemos simplemente, es cambiar el signo al
          // final de ésta por el que indica el usuario
-         else if ((pNumeroPantallaSecundaria.EndsWith("-") | 
-               pNumeroPantallaSecundaria.EndsWith("+") |
-            pNumeroPantallaSecundaria.EndsWith("*") | 
-            pNumeroPantallaSecundaria.EndsWith("/")) & 
+         else if ((!numeroPantallaSecundaria.EndsWith(pOperacion.GetSigno())) &
             numeroPantallaPrincipal == "0")
          {
             List<char> lista = new List<char>();
-            lista.AddRange(pNumeroPantallaSecundaria);
+            lista.AddRange(numeroPantallaSecundaria);
             lista.RemoveAt(lista.Count - 1);
-            lista.Add(Char.Parse(pSigno));
+            lista.Add(char.Parse(pOperacion.GetSigno()));
             numeroPantallaSecundaria = "";
             foreach (char e in lista)
             {
@@ -103,52 +100,36 @@ namespace Interactuando.Models
 
             lista.Clear();
             calculoRealizado = false;
+            GuardarUltimaOperacion = pOperacion;
          }
 
 
-         // aquí como la pantalla secundaria tiene signo aritmético al final y la pantalla principal
-         // es diferente de "0" realizamos calculo para obtener un resultado
-         else
+         else if (!pNumeroPantallaSecundaria.EndsWith(pOperacion.GetSigno()) &
+                  numeroPantallaPrincipal != "0")
          {
-            EscogerOperacion();
-            numeroPantallaSecundaria = resultado.ToString() + pSigno;
+            resultado = GuardarUltimaOperacion.Calculo(numeroAuxiliar,double.Parse(numeroPantallaPrincipal));
             numeroAuxiliar = resultado;
-            // con esto indicamos que cuando se presione algún botón numérico
-            resultado = 0; 
+            numeroPantallaSecundaria = resultado.ToString() + pOperacion.GetSigno();
             numeroPantallaPrincipal = "0";
-            calculoRealizado = true;
          }
 
-         signoAritmetico = pSigno;
+
+         else if (pNumeroPantallaSecundaria.EndsWith(pOperacion.GetSigno()) &
+                 numeroPantallaPrincipal != "0")
+         {
+            resultado = pOperacion.Calculo(numeroAuxiliar, double.Parse(numeroPantallaPrincipal));
+            numeroAuxiliar = resultado;
+            numeroPantallaSecundaria = resultado.ToString() + pOperacion.GetSigno();
+            numeroPantallaPrincipal = "0";
+         }
+
          return (numeroPantallaPrincipal, numeroPantallaSecundaria);
 
       }
-
-      private void EscogerOperacion()
-      {
-         if (signoAritmetico == "+")
-         {
-            resultado = numeroAuxiliar + double.Parse(numeroPantallaPrincipal);
-         }
-         else if (signoAritmetico == "-")
-         {
-            resultado = numeroAuxiliar - double.Parse(numeroPantallaPrincipal);
-         }
-         else if (signoAritmetico == "*")
-         {
-            resultado = numeroAuxiliar * double.Parse(numeroPantallaPrincipal);
-         }
-         else if (signoAritmetico == "/")
-         {
-            resultado = numeroAuxiliar / double.Parse(numeroPantallaPrincipal);
-         }
-      }
-
-      public (string,string) CalcularOperacionAritmetica(string pNumeroPantallaPrincipal, string pNumeroPantallaSecunddaria)
+      public (string,string) CalcularOperacionAritmetica(ref ICalcular pOperacion, string pNumeroPantallaPrincipal)
       {
          numeroPantallaPrincipal = pNumeroPantallaPrincipal;
-         numeroPantallaSecundaria = pNumeroPantallaSecunddaria;
-         EscogerOperacion();
+         resultado = pOperacion.Calculo(numeroAuxiliar,double.Parse(pNumeroPantallaPrincipal));
          calculoRealizado = true;
          numeroPantallaSecundaria += numeroPantallaPrincipal;
          numeroPantallaPrincipal = resultado.ToString();
@@ -186,7 +167,6 @@ namespace Interactuando.Models
          {
             double numero = double.Parse(pNumeroPantallaPrincipal) * -1;
             pNumeroPantallaPrincipal = numero.ToString();
-
          }
 
          return pNumeroPantallaPrincipal;

@@ -55,7 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interfaces\ICalcular.cs" />
     <Compile Include="Models\CalculadoraBasica.cs" />
+    <Compile Include="Models\Dividir.cs" />
+    <Compile Include="Models\Multiplicar.cs" />
+    <Compile Include="Models\OperacionesAritmeticas.cs" />
+    <Compile Include="Models\Restar.cs" />
+    <Compile Include="Models\Sumar.cs" />
     <Compile Include="System\Drawing\Color.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
