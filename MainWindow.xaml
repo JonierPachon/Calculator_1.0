@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:Interactuando"
         mc:Ignorable="d"
         Title="Calculadora Proyecto" Height="700" Width="430" ResizeMode="CanMinimize" KeyDown="Window_KeyDown" PreviewKeyDown="Window_PreviewKeyDown" KeyUp="Window_KeyUp">
-    
+
     <Grid>
-        <Border BorderThickness="1" BorderBrush="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="149*"/>
+            <ColumnDefinition Width="63*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="1" BorderBrush="Black" Grid.ColumnSpan="2" Margin="0,0,0,0.4">
             <Grid>
                 <Grid.ColumnDefinitions>
 
@@ -28,18 +32,38 @@
                     <RowDefinition Height="*" ></RowDefinition>
                     <RowDefinition Height="*" ></RowDefinition>
 
-
-
                 </Grid.RowDefinitions>
 
-                <StackPanel Background="Black" Grid.Row="0" Grid.ColumnSpan="4">
+                <Grid Grid.Row="0" Grid.ColumnSpan="4" Background="Black">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="100"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="0">
+                        <StackPanel>
+                            <TextBlock x:Name="txtPantallaSecundaria" FontSize="25" Foreground="white"
+                               TextAlignment="Right" TextWrapping="Wrap" Text="0">
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel>
+                            <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="white" 
+                                    TextAlignment="Right" Text="0" TextWrapping="Wrap">
+                            </TextBlock>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!--<StackPanel Background="Black" Grid.Row="0" Grid.ColumnSpan="4">
 
                     <Label Name="lblPantallaSecundaria" Foreground="white" FontSize="25" HorizontalAlignment="Right" VerticalAlignment="Top">0</Label>
 
-                    <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right">0</TextBlock>
+                    <TextBlock Name="txtPantallaPrincipal" FontSize="50" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right">0</TextBlock>-->
 
-                </StackPanel>
-
+                    
+                 
 
                 <Button Name="btn1" Click="btn1_Click" BorderThickness="1" Grid.Column="0" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black">1</Button>
                 <Button Name="btn2" Click="btn2_Click" BorderThickness="1" Grid.Column="1" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black">2</Button>
@@ -57,20 +81,19 @@
                 <Button Name="btn0" BorderThickness="1" Grid.Column="1" Grid.Row="5" FontSize="40" Background="yellow" Foreground="Black" Click="btn0_Click">0</Button>
                 <Button x:Name="btnDecimal" BorderThickness="1" Grid.Column="2" Grid.Row="5" FontSize="40" Background="yellow" Foreground="Black" Click="btnDecimal_Click" Content="."/>
 
-                <Button Name="btnMultiplicar" Click="btnMultiplicar_Click" BorderThickness="1" Grid.Column="4" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black">*</Button>
-                <Button Name="btnRestar" BorderThickness="1" Grid.Column="4" Grid.Row="3" FontSize="40" Background="yellow" Foreground="Black" Click="btnRestar_Click">-</Button>
-                <Button Name="btnSumar" BorderThickness="1" Grid.Column="4" Grid.Row="4" FontSize="40" Background="yellow" Foreground="Black" Click="btnSumar_Click">+</Button>
-                <Button Name="btnIgual"  BorderThickness="1" Grid.Column="4" Grid.Row="5" FontSize="40" Background="yellow" Foreground="Black" Click="btnIgual_Click">=</Button>
-
-                <Button Name ="btnResiduo" BorderThickness="1" Grid.Column="0" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnResiduo_Click_1">%</Button>
-                <Button Name="btnLimpiarCalculadora" BorderThickness="1" Grid.Column="1" Grid.Row="1" FontSize="25" Background="yellow" Foreground="Black" Click="btnLimpiarcalculadora_Click" >CE</Button>
-                <Button Name ="btnBorrarUltimoNumeroDigitado" BorderThickness="1" Grid.Column="2" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnBorrarUltimoNumeroDigitado_Click">←</Button>
-                <Button Name="btnDividir" BorderThickness="1" Grid.Column="3" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnDividir_Click">/</Button>
+                <Button Name="btnMultiplicar" Click="btnMultiplicar_Click" BorderThickness="1" Grid.Column="3" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black">*</Button>
+                <Button Name="btnRestar" BorderThickness="1" Grid.Column="4" Grid.Row="2" FontSize="40" Background="yellow" Foreground="Black" Click="btnRestar_Click">-</Button>
+                <Button Name="btnSumar" BorderThickness="1" Grid.Column="4" Grid.Row="3" FontSize="40" Background="yellow" Foreground="Black" Click="btnSumar_Click">+</Button>
+                <Button Name="btnIgual" Grid.Row="4" Grid.Column="3" Grid.RowSpan="2" BorderThickness="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnIgual_Click">=</Button>
+                
+                <Button Name="btnLimpiarCalculadora" Grid.Column="0" Grid.Row="1" BorderThickness="1" FontSize="25" Background="yellow" Foreground="Black" Click="btnLimpiarcalculadora_Click" >CE</Button>
+                <Button Name ="btnBorrarUltimoNumeroDigitado" BorderThickness="1" Grid.Column="1" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnBorrarUltimoNumeroDigitado_Click">←</Button>
+                <Button Name="btnDividir" BorderThickness="1" Grid.Column="2" Grid.Row="1" FontSize="40" Background="yellow" Foreground="Black" Click="btnDividir_Click">/</Button>
 
 
             </Grid>
         </Border>
 
-        
+
     </Grid>
 </Window>
