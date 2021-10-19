@@ -3,10 +3,14 @@ Calculadora sencilla para que podamos hacer sumas, restas, multiplicaciones y di
 
 <img src="imagenes/Calculator_1.0.PNG" width="50%">
 
-## Estado del proyecto
+## Tecnologias Utilizadas 🛠️
+proyecto realizado con C# en el entorno de **WPF**, Windows Presetation Foundation.
+
+## Estado del proyecto ⚙
 El proyecto se encuentra en ultimas etapas de proceso de optimización de su código. Estoy verificado si presenta errores, hacerle últimos retoques y ya quedaria listo.
 
-<img src="imagenes/UMLCalculator_1.0.png" width="50%">
+### Diagrama de uml
+Representación en el modelo uml de Calculator_1.0
+<img src="imagenes/UMLCalculator_1.0.png" width="700">
 
-## Tecnologias Utilizadas
-proyecto realizado con C# en el entorno de **WPF** abreviatura de Windows Presetation Foundation.
+⌨️ con aprecio 🧡 por JonierPachon 😊
