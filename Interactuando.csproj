@@ -102,6 +102,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="imagenes\Calculator_1.0.PNG" />
+    <Resource Include="imagenes\UMLCalculator_1.0.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
