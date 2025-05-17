@@ -1,4 +1,4 @@
-# Calculator_1.0Calculator_1.0
+# Calculator_1.0
 Calculadora sencilla para que podamos hacer sumas, restas, multiplicaciones y divisiones.
 
 <img src="imagenes/Calculator_1.0.PNG" width="50%">
